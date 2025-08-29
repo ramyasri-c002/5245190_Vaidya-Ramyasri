@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void heapifyDown(int heap[], int n, int i) {
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    
+    if (left < n && heap[left] < heap[smallest])
+        smallest = left;
+        
+    if (right < n && heap[right] < heap[smallest])
+        smallest = right;
+        
+    if (smallest != i) {
+        swap(&heap[i], &heap[smallest]);
+        heapifyDown(heap, n, smallest);
+    }
+}
+
+void heapifyUp(int heap[], int i) {
+    if (i && heap[(i - 1) / 2] > heap[i]) {
+        swap(&heap[i], &heap[(i - 1) / 2]);
+        heapifyUp(heap, (i - 1) / 2);
+    }
+}
+
+int extractMin(int heap[], int *n) {
+    if (*n <= 0) return -1;
+    int root = heap[0];
+    heap[0] = heap[--(*n)];
+    heapifyDown(heap, *n, 0);
+    return root;
+}
+
+void insertHeap(int heap[], int *n, int key) {
+    heap[(*n)++] = key;
+    heapifyUp(heap, (*n) - 1);
+}
+
+int cookies(int k, int A[], int n) {
+    for (int i = (n - 2) / 2; i >= 0; i--)
+        heapifyDown(A, n, i);
+        
+     int ops = 0;
+     while (n > 1 && A[0] < k) {
+        int least = extractMin(A, &n);
+        int second = extractMin(A, &n);
+        
+        long long newSweet = (long long)least + 2LL * second;
+        insertHeap(A, &n, (int)newSweet);
+        
+        ops++;
+     }
+     
+     if (n > 0 && A[0] >= k)
+        return ops;
+     else
+        return -1;    
+}
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    
+    int *A = (int *)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++)
+        scanf("%d", &A[i]);
+        
+     int result = cookies(k, A, n);
+     printf("%d\n", result);
+     
+     free(A);
+     return 0;
+}

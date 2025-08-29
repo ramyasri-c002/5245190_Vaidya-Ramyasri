@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MOD 1000000007
+
+long long mod_pow(long long base, long long exp) {
+    long long result = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp % 2 == 1) result = (result * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return result;
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    
+    while (t--) {
+        int n, m;
+        scanf("%d %d", &n, &m);
+        
+        long long row_ways[m+1];
+        memset(row_ways, 0, sizeof(row_ways));
+        
+        row_ways[0] = 1;
+        for (int i = 1; i <= m; i++) {
+            for (int j  = 1; j <= 4; j++) {
+                if (i - j >= 0)
+                    row_ways[i] = (row_ways[i] + row_ways[i-j]) % MOD;
+            }
+        }
+        
+        long long total_ways[m+1];
+        for (int i = 1; i <= m; i++) {
+            total_ways[i] = mod_pow(row_ways[i], n);
+        }
+        
+        long long solid[m+1];
+        solid[0] = 0;
+        solid[1] = total_ways[1];
+        
+        for (int w = 2; w <= m; w++) {
+            long long temp = total_ways[w];
+            for (int i = 1; i < w; i++) {
+                temp = (temp - (solid[i] * total_ways[w-i]) % MOD + MOD) % MOD;
+            }
+            solid[w] = temp;
+        }
+        
+        printf("%lld\n", solid[m] % MOD);
+            
+    }
+    
+    return 0;
+}

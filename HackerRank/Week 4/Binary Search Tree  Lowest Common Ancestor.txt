@@ -1,0 +1,13 @@
+PYTHON
+def lca(root, v1, v2):
+    if v1>v2:
+        v1, v2= v2, v1
+    current = root
+    while current:
+        if v2 < current.info:
+            current= current.left
+        elif v1 > current.info:
+            current = current.right
+        else:
+            return current 
+            

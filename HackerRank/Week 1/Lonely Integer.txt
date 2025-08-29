@@ -1,0 +1,18 @@
+#include<stdio.h>
+int lonely_integer(int a[], int size) {
+    int result = 0;
+    for (int i = 0; i < size; i++) {
+        result ^= a[i];
+    }
+    return result;
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    int a[n];
+    for (int i = 0; i< n; i++) {
+        scanf("%d", &a[i]);
+    }
+    printf("%d", lonely_integer(a, n));
+    return 0;
+}

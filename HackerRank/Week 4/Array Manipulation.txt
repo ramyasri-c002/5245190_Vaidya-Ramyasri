@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+#define MAXN 10000005
+
+long long arr[MAXN];
+
+int main() {
+    int n, m;
+    scanf("%d %d", &n, &m);
+    
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        long long k;
+        scanf("%d %d %lld", &a, &b, &k);
+        
+        arr[a] += k;
+        if (b + 1 <= n) arr[b + 1] -= k;
+        
+    }
+    
+    long long max_val = 0;
+    long long current = 0;
+    
+    for (int i = 1; i <= n; i++) {
+        current += arr[i];
+        if (current > max_val) {
+            max_val = current;
+        }
+    }
+    
+    printf("%lld\n", max_val);
+    return 0;
+}

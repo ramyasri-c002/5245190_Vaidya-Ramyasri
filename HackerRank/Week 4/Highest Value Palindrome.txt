@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAXN 100005
+
+char s[MAXN];
+int changed[MAXN];
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    scanf("%s", s);
+    
+    int l = 0, r = n - 1;
+    int used = 0;
+    
+    while (l < r) {
+        if (s[l] != s[r]) {
+            if (s[l] > s[r]) {
+                s[r] = s[l];
+                changed[r] = 1;
+            } else {
+                s[l] = s[r];
+                changed[l] = 1;
+            }
+            used++;
+        }
+        l++;
+        r--;
+    }
+    
+    if (used > k) {
+        printf("-1\n");
+        return 0;
+    }
+    
+    int remaining = k - used;
+    l = 0;
+    r = n - 1;
+    
+    while (l < r) {
+        if (s[l] != '9') {
+            if (changed[l] || changed[r]) {
+                if (remaining >= 1) {
+                    s[l] = s[r] = '9';
+                    remaining --;
+                }
+            } else {
+                if (remaining >= 2) {
+                    s[l] = s[r] = '9';
+                    remaining -= 2;
+                }
+            }
+        }
+        l++;
+        r--;
+    }
+    
+    if (n % 2 == 1 && remaining > 0) {
+        s[n/2] = '9';
+    }
+    
+    printf("%s\n", s);
+    return 0;
+}

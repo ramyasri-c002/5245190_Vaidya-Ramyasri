@@ -1,0 +1,15 @@
+#include <stdio.h>
+int main() {
+    int T;
+    scanf("%d", &T);
+    while (T--) {
+        int N, M;
+        scanf("%d %d", &N, &M);
+        if (M == 1 || N % 2 == 0) {
+            printf("2\n");
+        } else {
+            printf("1\n");
+        }
+    }
+    return 0;
+}

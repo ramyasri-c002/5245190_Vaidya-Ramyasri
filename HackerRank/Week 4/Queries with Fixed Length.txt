@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+#define MAXN 100000
+
+int arr[MAXN];
+int deque[MAXN];
+int front, back;
+
+int main() {
+    int n, q;
+    scanf("%d %d", &n, &q);
+    
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    while (q--) {
+        int d;
+        scanf("%d", &d);
+        
+        front = 0;
+        back = -1;
+        
+        int min_of_max = 1000000000;
+        
+        for (int i = 0; i < n; i++) {
+            
+            if (front <= back && deque[front] <= i - d)
+                front++;
+                
+             while (front <= back && arr[deque[back]] <= arr[i])
+                 back--;
+                 
+              deque[++back] = i;
+              
+              if (i >= d - 1) {
+                  int max_in_window = arr[deque[front]];
+                  if (max_in_window < min_of_max)
+                      min_of_max = max_in_window;
+              }      
+        }
+        
+        printf("%d\n", min_of_max);
+    }
+    
+    return 0;
+}
